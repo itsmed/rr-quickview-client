@@ -37,8 +37,8 @@
 }
 
  .Resizer:hover {
-    -webkit-transition: all 2s ease;
-    transition: all 2s ease;
+    -webkit-transition: all 1s ease;
+    transition: all 1s ease;
 }
 
  .Resizer.horizontal {
@@ -51,21 +51,32 @@
 }
 
 .Resizer.horizontal:hover {
-    border-top: 5px solid rgba(0, 0, 0, 0.5);
-    border-bottom: 5px solid rgba(0, 0, 0, 0.5);
+    border-top: 5px solid rgba(0, 0, 0, 0.9);
+    border-bottom: 5px solid rgba(0, 0, 0, 0.9);
+    background-color: red;
+    width: 15px;
+}
+
+.Resizer.horizontal:active {
+    border-top: 15px solid rgba(0, 0, 0, 0.9);
+    border-bottom: 15px solid rgba(0, 0, 0, 0.9);
+    background-color: red;
+    width: 15px;
 }
 
 .Resizer.vertical {
     width: 11px;
     margin: 0 -5px;
-    border-left: 5px solid rgba(255, 255, 255, 0);
-    border-right: 5px solid rgba(255, 255, 255, 0);
+    border-left: 5px solid rgba(255, 255, 255, 0.9);
+    border-right: 5px solid rgba(255, 255, 255, 0.9);
     cursor: col-resize;
 }
 
 .Resizer.vertical:hover {
-    border-left: 5px solid rgba(0, 0, 0, 0.5);
-    border-right: 5px solid rgba(0, 0, 0, 0.5);
+    border-left: 5px solid rgba(0, 0, 0, 0.9);
+    border-right: 5px solid rgba(0, 0, 0, 0.9);
+    background-color: red;
+    width: 15px;
 }
 Resizer.disabled {
   cursor: not-allowed;
