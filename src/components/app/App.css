@@ -42,7 +42,7 @@
 }
 
  .Resizer.horizontal {
-    height: 11px;
+    height: 50px;
     margin: -5px 0;
     border-top: 5px solid rgba(255, 255, 255, 0);
     border-bottom: 5px solid rgba(255, 255, 255, 0);
@@ -83,4 +83,13 @@ Resizer.disabled {
 }
 Resizer.disabled:hover {
   border-color: transparent;
+}
+
+.selected-container {
+  z-index: 99;
+  height: 100%;
+}
+
+.overflow-container {
+  overflow: scroll;
 }
