@@ -38,14 +38,6 @@ class App extends Component {
     });
     this.refs.idSearch.value = '';
     this.refs.idSearch.focus();
-
-    let i = 0;
-    let arr = [];
-    while (i < 100) {
-      arr.push(i)
-      i++;
-    }
-    this.setState({filteredResults: arr})
   }
 
   updateCategory(e) {
@@ -141,6 +133,14 @@ class App extends Component {
                   onChange={ () => this.rawSearch('name') }
                 />
               </div>
+              <h2>Filtered Search Results</h2>
+              <div style={{height: '200px'}} className="overflow-container">
+                <SearchResults
+                  searchResults={ filteredResults }
+                  category={ category }
+                  updateSelectedRecord={ this.updateSelectedRecord }
+                />
+              </div>
             </div>
             <SplitPane split="horizontal" minSize={10} defaultSize={350}>
                 <div style={{backgroundColor: 'lavender'}} className="overflow-container">
@@ -152,11 +152,6 @@ class App extends Component {
                       updateSelectedRecord={ this.updateSelectedRecord }
                     />
                   </div>
-                  <SearchResults
-                    searchResults={ filteredResults }
-                    category={ category }
-                    updateSelectedRecord={ this.updateSelectedRecord }
-                  />
                 </div>
                 <div style={{backgroundColor: 'mediumaquamarine', zIndex: '999'}}>
                   <SplitPane split="vertical" minSize={150} defaultSize={550}>
