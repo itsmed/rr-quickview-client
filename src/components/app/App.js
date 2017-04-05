@@ -20,6 +20,7 @@ class App extends Component {
 
     this.updateCategory = this.updateCategory.bind(this);
     this.categorySearch = this.categorySearch.bind(this);
+    this.handleRecordSelect = this.handleRecordSelect.bind(this);
   }
 
   componentDidMount() {
@@ -34,13 +35,15 @@ class App extends Component {
   }
 
   categorySearch(category) {
-    
-    console.log('category', category);
     axios.get(TestApiRouteBase.concat(category, '/all'))
       .then(({data}) => this.setState({
         searchResults: data.data,
       }))
       .catch(err => console.log('err', err));
+  }
+
+  handleRecordSelect(category, id) {
+    console.log('drag start', id);
   }
 
   render() {
@@ -51,6 +54,10 @@ class App extends Component {
         <h1>quickView</h1>
         <SplitPane split="vertical" minSize={10} defaultSize={150}>
             <div style={{backgroundColor: 'palegreen'}}>
+              <div>
+                <input type="text" placeholder="Name" style={{margin: '10px'}} />
+                <input type="text" placeholder="Id" style={{margin: '10px'}} />
+              </div>
               <ul>
                 <li style={{margin: '10px'}} onClick={ this.updateCategory }>Users</li>
                 <li style={{margin: '10px'}} onClick={ this.updateCategory }>Transactions</li>
@@ -68,11 +75,11 @@ class App extends Component {
                       searchResults.map(r => {
                         switch(category) {
                         case 'users':
-                          return <UserRecord key={r._id} user={r} />;
+                          return <UserRecord key={r._id} handleSelect={ this.handleRecordSelect } user={r} />;
                         case 'transactions':
-                          return <TransactionRecord key={r._id} transaction={r} />
+                          return <TransactionRecord key={r._id} handleSelect={ this.handleRecordSelect } transaction={r} />
                         case 'employees':
-                          return <EmployeeRecord key={r._id} employee={r} />
+                          return <EmployeeRecord key={r._id}handleSelect={ this.handleRecordSelect } employee={r} />
                         default:
                           return '';
                         }

@@ -42,7 +42,7 @@
 }
 
  .Resizer.horizontal {
-    height: 50px;
+    height: 20px;
     margin: -5px 0;
     border-top: 5px solid rgba(255, 255, 255, 0);
     border-bottom: 5px solid rgba(255, 255, 255, 0);
@@ -58,10 +58,7 @@
 }
 
 .Resizer.horizontal:active {
-    border-top: 15px solid rgba(0, 0, 0, 0.9);
-    border-bottom: 15px solid rgba(0, 0, 0, 0.9);
-    background-color: red;
-    width: 15px;
+    cursor: -webkit-grabbing;
 }
 
 .Resizer.vertical {
@@ -77,6 +74,10 @@
     border-right: 5px solid rgba(0, 0, 0, 0.9);
     background-color: red;
     width: 15px;
+}
+
+.Resizer.vertical:active {
+  cursor: -webkit-grabbing;
 }
 Resizer.disabled {
   cursor: not-allowed;
