@@ -38,6 +38,14 @@ class App extends Component {
     });
     this.refs.idSearch.value = '';
     this.refs.idSearch.focus();
+
+    let i = 0;
+    let arr = [];
+    while (i < 100) {
+      arr.push(i)
+      i++;
+    }
+    this.setState({filteredResults: arr})
   }
 
   updateCategory(e) {
@@ -56,7 +64,9 @@ class App extends Component {
   }
 
   handleIdSearch() {
-    axios.get(TestApiRouteBase.concat(this.state.category, '/id/', this.refs.idSearch.value.trim()))
+    let term = this.refs.idSearch.value.trim();
+
+    axios.get(TestApiRouteBase.concat(this.state.category, '/id/', term))
       .then(({data}) => {
         this.setState({
           filteredResults: [ data.data ]
@@ -65,11 +75,17 @@ class App extends Component {
       .catch(err => console.warn('error in handle id search', err.message));
   }
 
-  rawSearch(field, term) {
-    // http://localhost:3000/api/users/search/id/:id
-    let url = TestApiRouteBase.concat(this.state.category, '/search/', field, '/', term);
+  rawSearch(field) {
+    // http://localhost:3000/api/users/search/name/:name
+    let term = this.refs.nameSearch.value.trim();
+    let url = TestApiRouteBase.concat(this.state.category, '/search/', 'email', '/', term);
+
     return axios.get(url)
-      .then(({data}) => console.log('resonse from raw serch', data))
+      .then(({data}) => {
+        this.setState({
+          filteredResults: data.data,
+        });
+      })
       .catch(err => console.warn('error in raw serch', err.message));
   }
 
@@ -99,24 +115,30 @@ class App extends Component {
   }
 
   render() {
-    const { category, searchResults, recordResults1, recordResults2 } = this.state;
+    const { category, searchResults, filteredResults, recordResults1, recordResults2 } = this.state;
 
     return (
       <div>
         <h1>quickView</h1>
         <SplitPane split="vertical" minSize={10} defaultSize={150}>
-            <div style={{backgroundColor: 'palegreen'}}>
+            <div style={{backgroundColor: 'palegreen'}} className="overflow-container">
+              <div>
               <ul>
                 <li style={{margin: '10px'}} onClick={ this.updateCategory }>Users</li>
                 <li style={{margin: '10px'}} onClick={ this.updateCategory }>Transactions</li>
                 <li style={{margin: '10px'}} onClick={ this.updateCategory }>Employees</li>
               </ul>
-              <div>
                 <input
                   type="text"
                   ref="idSearch"
                   placeholder="Id"
                   onChange={ this.handleIdSearch }
+                />
+                <input
+                  type="text"
+                  ref="nameSearch"
+                  placeholder="Name"
+                  onChange={ () => this.rawSearch('name') }
                 />
               </div>
             </div>
@@ -130,6 +152,11 @@ class App extends Component {
                       updateSelectedRecord={ this.updateSelectedRecord }
                     />
                   </div>
+                  <SearchResults
+                    searchResults={ filteredResults }
+                    category={ category }
+                    updateSelectedRecord={ this.updateSelectedRecord }
+                  />
                 </div>
                 <div style={{backgroundColor: 'mediumaquamarine', zIndex: '999'}}>
                   <SplitPane split="vertical" minSize={150} defaultSize={550}>
