@@ -56,7 +56,6 @@ class App extends Component {
   }
 
   handleIdSearch() {
-    // console.log(this.refs.idSearch.value);
     axios.get(TestApiRouteBase.concat(this.state.category, '/id/', this.refs.idSearch.value.trim()))
       .then(({data}) => {
         this.setState({
