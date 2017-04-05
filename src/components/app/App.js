@@ -8,6 +8,7 @@ import { TestApiRouteBase } from '../../api-routes';
 import EmployeeRecord from '../employee-record/EmployeeRecord';
 import TransactionRecord from '../transaction-record/TransactionRecord';
 import UserRecord from '../user-record/UserRecord';
+import SearchResults from '../search-results/SearchResults';
 
 class App extends Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class App extends Component {
     this.state = {
       category: 'users',
       searchResults: [],
+      filteredResults: [],
       selectedContainer: '',
       recordResults1: null,
       recordResults2: null,
@@ -25,6 +27,8 @@ class App extends Component {
     this.categorySearch = this.categorySearch.bind(this);
     this.updateSelectedRecord = this.updateSelectedRecord.bind(this);
     this.selectContainer = this.selectContainer.bind(this);
+    this.handleIdSearch = this.handleIdSearch.bind(this);
+    this.rawSearch = this.rawSearch.bind(this);
   }
 
   componentDidMount() {
@@ -32,6 +36,8 @@ class App extends Component {
     this.setState({
       selectedContainer: this.refs.container1,
     });
+    this.refs.idSearch.value = '';
+    this.refs.idSearch.focus();
   }
 
   updateCategory(e) {
@@ -47,6 +53,25 @@ class App extends Component {
         searchResults: data.data,
       }))
       .catch(err => console.log('err', err));
+  }
+
+  handleIdSearch() {
+    // console.log(this.refs.idSearch.value);
+    axios.get(TestApiRouteBase.concat(this.state.category, '/id/', this.refs.idSearch.value.trim()))
+      .then(({data}) => {
+        this.setState({
+          filteredResults: [ data.data ]
+        })
+      })
+      .catch(err => console.warn('error in handle id search', err.message));
+  }
+
+  rawSearch(field, term) {
+    // http://localhost:3000/api/users/search/id/:id
+    let url = TestApiRouteBase.concat(this.state.category, '/search/', field, '/', term);
+    return axios.get(url)
+      .then(({data}) => console.log('resonse from raw serch', data))
+      .catch(err => console.warn('error in raw serch', err.message));
   }
 
   updateSelectedRecord(category, record) {
@@ -87,37 +112,24 @@ class App extends Component {
                 <li style={{margin: '10px'}} onClick={ this.updateCategory }>Transactions</li>
                 <li style={{margin: '10px'}} onClick={ this.updateCategory }>Employees</li>
               </ul>
+              <div>
+                <input
+                  type="text"
+                  ref="idSearch"
+                  placeholder="Id"
+                  onChange={ this.handleIdSearch }
+                />
+              </div>
             </div>
-            <SplitPane split="horizontal" minSize={10} defaultSize={150}>
+            <SplitPane split="horizontal" minSize={10} defaultSize={350}>
                 <div style={{backgroundColor: 'lavender'}} className="overflow-container">
                   <div>
-                    <h2>Search Criteria</h2>
-                  </div>
-                  <div>
                     <h2>{ category.toUpperCase() } Search Results</h2>
-                    {
-                      searchResults.map(r => {
-                        switch(category) {
-                        case 'users':
-                          return <UserRecord
-                            key={r._id}
-                            updateSelectedRecord={ this.updateSelectedRecord }
-                            user={r} />;
-                        case 'transactions':
-                          return <TransactionRecord
-                          key={r._id}
-                          updateSelectedRecord={ this.updateSelectedRecord }
-                          transaction={r} />
-                        case 'employees':
-                          return <EmployeeRecord
-                          key={r._id}
-                          updateSelectedRecord={ this.updateSelectedRecord }
-                          employee={r} />
-                        default:
-                          return '';
-                        }
-                      })
-                    }
+                    <SearchResults
+                      searchResults={ searchResults }
+                      category={ category }
+                      updateSelectedRecord={ this.updateSelectedRecord }
+                    />
                   </div>
                 </div>
                 <div style={{backgroundColor: 'mediumaquamarine', zIndex: '999'}}>
