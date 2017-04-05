@@ -8,11 +8,12 @@ class UserRecord extends Component {
   }
 
   handleSelect() {
-    return this.props.handleSelect('user', this.props.user._id);
+    return this.props.updateSelectedRecord('user', this.props.user);
   }
 
   render() {
     const { user } = this.props;
+
     return <div onClick={ this.handleSelect }>
       <label>Name: </label>{user.full_name}<br />
       <label>Id: </label>{user._id}<br />

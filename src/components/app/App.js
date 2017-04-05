@@ -16,15 +16,22 @@ class App extends Component {
     this.state = {
       category: 'users',
       searchResults: [],
+      selectedContainer: '',
+      recordResults1: null,
+      recordResults2: null,
     };
 
     this.updateCategory = this.updateCategory.bind(this);
     this.categorySearch = this.categorySearch.bind(this);
-    this.handleRecordSelect = this.handleRecordSelect.bind(this);
+    this.updateSelectedRecord = this.updateSelectedRecord.bind(this);
+    this.selectContainer = this.selectContainer.bind(this);
   }
 
   componentDidMount() {
     this.categorySearch(this.state.category);
+    this.setState({
+      selectedContainer: this.refs.container1,
+    });
   }
 
   updateCategory(e) {
@@ -42,22 +49,39 @@ class App extends Component {
       .catch(err => console.log('err', err));
   }
 
-  handleRecordSelect(category, id) {
-    console.log('drag start', id);
+  updateSelectedRecord(category, record) {
+    if (this.state.selectedContainer.id === 'container1') {
+      this.setState({
+        recordResults1: {
+          category,
+          record
+        }
+      });
+    } else {
+      this.setState({
+        recordResults2: {
+          category,
+          record
+        }
+      });
+    }
+  }
+
+  selectContainer(ref) {
+    const container = 'container'.concat(ref.toString());
+    this.setState({
+      selectedContainer: this.refs[container],
+    });
   }
 
   render() {
-    const { category, searchResults } = this.state;
+    const { category, searchResults, recordResults1, recordResults2 } = this.state;
 
     return (
       <div>
         <h1>quickView</h1>
         <SplitPane split="vertical" minSize={10} defaultSize={150}>
             <div style={{backgroundColor: 'palegreen'}}>
-              <div>
-                <input type="text" placeholder="Name" style={{margin: '10px'}} />
-                <input type="text" placeholder="Id" style={{margin: '10px'}} />
-              </div>
               <ul>
                 <li style={{margin: '10px'}} onClick={ this.updateCategory }>Users</li>
                 <li style={{margin: '10px'}} onClick={ this.updateCategory }>Transactions</li>
@@ -75,11 +99,20 @@ class App extends Component {
                       searchResults.map(r => {
                         switch(category) {
                         case 'users':
-                          return <UserRecord key={r._id} handleSelect={ this.handleRecordSelect } user={r} />;
+                          return <UserRecord
+                            key={r._id}
+                            updateSelectedRecord={ this.updateSelectedRecord }
+                            user={r} />;
                         case 'transactions':
-                          return <TransactionRecord key={r._id} handleSelect={ this.handleRecordSelect } transaction={r} />
+                          return <TransactionRecord
+                          key={r._id}
+                          updateSelectedRecord={ this.updateSelectedRecord }
+                          transaction={r} />
                         case 'employees':
-                          return <EmployeeRecord key={r._id}handleSelect={ this.handleRecordSelect } employee={r} />
+                          return <EmployeeRecord
+                          key={r._id}
+                          updateSelectedRecord={ this.updateSelectedRecord }
+                          employee={r} />
                         default:
                           return '';
                         }
@@ -89,11 +122,50 @@ class App extends Component {
                 </div>
                 <div style={{backgroundColor: 'mediumaquamarine', zIndex: '999'}}>
                   <SplitPane split="vertical" minSize={150} defaultSize={550}>
-                     <div className="selected-container overflow-container" style={{backgroundColor: 'lightcyan'}}>
-                       words are wind
+                     <div 
+                      ref="container1"
+                      id="container1"
+                      onClick={ () => this.selectContainer(1) }
+                      className="selected-container overflow-container" style={{backgroundColor: 'lightcyan'}}
+                      >
+                       {
+                        recordResults1 && recordResults1.category === 'user' ? 
+                          <UserRecord
+                            updateSelectedRecord={ this.updateSelectedRecord }
+                            user={recordResults1.record} />
+                          : recordResults1 && recordResults1.category === 'employee' ? 
+                          <EmployeeRecord
+                            updateSelectedRecord={ this.updateSelectedRecord }
+                            employee={recordResults1.record} />
+                          : recordResults1 && recordResults1.category === 'transaction' ? 
+                          <TransactionRecord
+                            updateSelectedRecord={ this.updateSelectedRecord }
+                            transaction={recordResults1.record} />
+                          : ''
+                       }
                      </div>
-                     <div className="selected-container overflow-container" style={{backgroundColor: 'oldlace'}}>
-                       she said
+                     <div
+                      ref="container2"
+                      id="container2"
+                      onClick={ () => this.selectContainer(2) }
+                      className="selected-container overflow-container"
+                      style={{backgroundColor: 'oldlace'}}
+                      >
+                       {
+                        recordResults2 && recordResults2.category === 'user' ? 
+                          <UserRecord
+                            updateSelectedRecord={ this.updateSelectedRecord }
+                            user={recordResults2.record} />
+                          : recordResults2 && recordResults2.category === 'employee' ? 
+                          <EmployeeRecord
+                            updateSelectedRecord={ this.updateSelectedRecord }
+                            employee={recordResults2.record} />
+                          : recordResults2 && recordResults2.category === 'transaction' ? 
+                          <TransactionRecord
+                            updateSelectedRecord={ this.updateSelectedRecord }
+                            transaction={recordResults2.record} />
+                          : ''
+                       }
                      </div>
                  </SplitPane>
                 </div>
@@ -104,4 +176,4 @@ class App extends Component {
   }
 }
 
-export default App
+export default App;

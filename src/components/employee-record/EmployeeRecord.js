@@ -8,11 +8,12 @@ class EmployeeRecord extends Component {
   }
 
   handleSelect() {
-    return this.props.handleSelect('employee', this.props.employee._id);
+    return this.props.updateSelectedRecord('employee', this.props.employee);
   }
 
   render() {
     const { employee } = this.props;
+
     return <div onClick={ this.handleSelect }>
       <label>Name: </label>{employee.full_name}<br />
       <label>Id: </label>{employee._id}<br />
