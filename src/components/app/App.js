@@ -32,6 +32,7 @@ class App extends Component {
     this.selectContainer = this.selectContainer.bind(this);
     this.handleIdSearch = this.handleIdSearch.bind(this);
     this.rawSearch = this.rawSearch.bind(this);
+    this.getTransactionsByUserId = this.getTransactionsByUserId.bind(this);
   }
 
   componentDidMount() {
@@ -68,6 +69,19 @@ class App extends Component {
         })
       })
       .catch(err => console.warn('error in handle id search', err.message));
+  }
+
+  getTransactionsByUserId() {
+    let url = TestApiRouteBase.concat('transactions/user/id/', this.refs.userIdSearch.value);
+
+    return axios.get(url)
+      .then(({data}) => {
+        console.log('data from user id', data);
+        this.setState({
+          filteredResults: data.data,
+        })
+      })
+      .catch(err => console.warn('Error getting user by id', err.message));
   }
 
   rawSearch(field) {
@@ -148,6 +162,12 @@ class App extends Component {
                   ref="phoneSearch"
                   placeholder="Phone"
                   onChange={ () => this.rawSearch('phone') }
+                />
+                <input
+                  type="text"
+                  ref="userIdSearch"
+                  placeholder="Transactions By User Id"
+                  onChange={ () => this.getTransactionsByUserId() }
                 />
                 { this.state.category === 'employees' ?
                     <input
