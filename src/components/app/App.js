@@ -72,7 +72,9 @@ class App extends Component {
 
   rawSearch(field) {
     // http://localhost:3000/api/users/search/name/:name
-    let term = this.refs.nameSearch.value.trim();
+    const targetRef = field.concat('Search');
+    
+    let term = this.refs[targetRef].value.trim();
     let url = TestApiRouteBase.concat(this.state.category, '/search/', 'email', '/', term);
 
     return axios.get(url)
@@ -134,6 +136,12 @@ class App extends Component {
                   ref="nameSearch"
                   placeholder="Name"
                   onChange={ () => this.rawSearch('name') }
+                />
+                <input
+                  type="text"
+                  ref="emailSearch"
+                  placeholder="Email"
+                  onChange={ () => this.rawSearch('email') }
                 />
               </div>
               <h2>Filtered Search Results</h2>
