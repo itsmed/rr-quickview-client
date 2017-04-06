@@ -4,6 +4,8 @@ import UserRecord from '../user-record/UserRecord';
 import TransactionRecord from '../transaction-record/TransactionRecord';
 import EmployeeRecord from '../employee-record/EmployeeRecord';
 
+import './SearchResults.css';
+
 export default class SearchResults extends Component {
   constructor(props) {
     super(props);

@@ -5,10 +5,13 @@ import SplitPane from 'react-split-pane';
 import './App.css';
 import { TestApiRouteBase } from '../../api-routes';
 
+import EmployeeDetails from '../employee-details/EmployeeDetails';
 import EmployeeRecord from '../employee-record/EmployeeRecord';
-import TransactionRecord from '../transaction-record/TransactionRecord';
+import UserDetails from '../user-details/UserDetails';
 import UserRecord from '../user-record/UserRecord';
 import SearchResults from '../search-results/SearchResults';
+import TransactionDetails from '../transaction-details/TransactionDetails';
+import TransactionRecord from '../transaction-record/TransactionRecord';
 
 class App extends Component {
   constructor(props) {
@@ -56,7 +59,9 @@ class App extends Component {
   }
 
   handleIdSearch() {
-    axios.get(TestApiRouteBase.concat(this.state.category, '/id/', this.refs.idSearch.value.trim()))
+    let term = this.refs.idSearch.value.trim();
+
+    axios.get(TestApiRouteBase.concat(this.state.category, '/id/', term))
       .then(({data}) => {
         this.setState({
           filteredResults: [ data.data ]
@@ -65,11 +70,17 @@ class App extends Component {
       .catch(err => console.warn('error in handle id search', err.message));
   }
 
-  rawSearch(field, term) {
-    // http://localhost:3000/api/users/search/id/:id
-    let url = TestApiRouteBase.concat(this.state.category, '/search/', field, '/', term);
+  rawSearch(field) {
+    // http://localhost:3000/api/users/search/name/:name
+    let term = this.refs.nameSearch.value.trim();
+    let url = TestApiRouteBase.concat(this.state.category, '/search/', 'email', '/', term);
+
     return axios.get(url)
-      .then(({data}) => console.log('resonse from raw serch', data))
+      .then(({data}) => {
+        this.setState({
+          filteredResults: data.data,
+        });
+      })
       .catch(err => console.warn('error in raw serch', err.message));
   }
 
@@ -99,24 +110,38 @@ class App extends Component {
   }
 
   render() {
-    const { category, searchResults, recordResults1, recordResults2 } = this.state;
+    const { category, searchResults, filteredResults, recordResults1, recordResults2 } = this.state;
 
     return (
       <div>
         <h1>quickView</h1>
         <SplitPane split="vertical" minSize={10} defaultSize={150}>
-            <div style={{backgroundColor: 'palegreen'}}>
+            <div style={{backgroundColor: 'palegreen'}} className="overflow-container">
+              <div>
               <ul>
                 <li style={{margin: '10px'}} onClick={ this.updateCategory }>Users</li>
                 <li style={{margin: '10px'}} onClick={ this.updateCategory }>Transactions</li>
                 <li style={{margin: '10px'}} onClick={ this.updateCategory }>Employees</li>
               </ul>
-              <div>
                 <input
                   type="text"
                   ref="idSearch"
                   placeholder="Id"
                   onChange={ this.handleIdSearch }
+                />
+                <input
+                  type="text"
+                  ref="nameSearch"
+                  placeholder="Name"
+                  onChange={ () => this.rawSearch('name') }
+                />
+              </div>
+              <h2>Filtered Search Results</h2>
+              <div id="filtered-results" className="overflow-container">
+                <SearchResults
+                  searchResults={ filteredResults }
+                  category={ category }
+                  updateSelectedRecord={ this.updateSelectedRecord }
                 />
               </div>
             </div>
@@ -141,15 +166,15 @@ class App extends Component {
                       >
                        {
                         recordResults1 && recordResults1.category === 'user' ? 
-                          <UserRecord
+                          <UserDetails
                             updateSelectedRecord={ this.updateSelectedRecord }
                             user={recordResults1.record} />
                           : recordResults1 && recordResults1.category === 'employee' ? 
-                          <EmployeeRecord
+                          <EmployeeDetails
                             updateSelectedRecord={ this.updateSelectedRecord }
                             employee={recordResults1.record} />
                           : recordResults1 && recordResults1.category === 'transaction' ? 
-                          <TransactionRecord
+                          <TransactionDetails
                             updateSelectedRecord={ this.updateSelectedRecord }
                             transaction={recordResults1.record} />
                           : ''
@@ -164,15 +189,15 @@ class App extends Component {
                       >
                        {
                         recordResults2 && recordResults2.category === 'user' ? 
-                          <UserRecord
+                          <UserDetails
                             updateSelectedRecord={ this.updateSelectedRecord }
                             user={recordResults2.record} />
                           : recordResults2 && recordResults2.category === 'employee' ? 
-                          <EmployeeRecord
+                          <EmployeeDetails
                             updateSelectedRecord={ this.updateSelectedRecord }
                             employee={recordResults2.record} />
                           : recordResults2 && recordResults2.category === 'transaction' ? 
-                          <TransactionRecord
+                          <TransactionDetails
                             updateSelectedRecord={ this.updateSelectedRecord }
                             transaction={recordResults2.record} />
                           : ''
