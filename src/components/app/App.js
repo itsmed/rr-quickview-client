@@ -5,10 +5,12 @@ import SplitPane from 'react-split-pane';
 import './App.css';
 import { TestApiRouteBase } from '../../api-routes';
 
+import EmployeeDetails from '../employee-details/EmployeeDetails';
 import EmployeeRecord from '../employee-record/EmployeeRecord';
-import TransactionRecord from '../transaction-record/TransactionRecord';
+import UserDetails from '../user-details/UserDetails';
 import UserRecord from '../user-record/UserRecord';
 import SearchResults from '../search-results/SearchResults';
+import TransactionRecord from '../transaction-record/TransactionRecord';
 
 class App extends Component {
   constructor(props) {
@@ -134,7 +136,7 @@ class App extends Component {
                 />
               </div>
               <h2>Filtered Search Results</h2>
-              <div style={{height: '200px'}} className="overflow-container">
+              <div id="filtered-results" className="overflow-container">
                 <SearchResults
                   searchResults={ filteredResults }
                   category={ category }
@@ -163,11 +165,11 @@ class App extends Component {
                       >
                        {
                         recordResults1 && recordResults1.category === 'user' ? 
-                          <UserRecord
+                          <UserDetails
                             updateSelectedRecord={ this.updateSelectedRecord }
                             user={recordResults1.record} />
                           : recordResults1 && recordResults1.category === 'employee' ? 
-                          <EmployeeRecord
+                          <EmployeeDetails
                             updateSelectedRecord={ this.updateSelectedRecord }
                             employee={recordResults1.record} />
                           : recordResults1 && recordResults1.category === 'transaction' ? 
@@ -186,7 +188,7 @@ class App extends Component {
                       >
                        {
                         recordResults2 && recordResults2.category === 'user' ? 
-                          <UserRecord
+                          <UserDetails
                             updateSelectedRecord={ this.updateSelectedRecord }
                             user={recordResults2.record} />
                           : recordResults2 && recordResults2.category === 'employee' ? 

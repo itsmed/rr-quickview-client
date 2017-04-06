@@ -100,3 +100,7 @@ Resizer.disabled:hover {
 .overflow-container {
   overflow: scroll;
 }
+
+#filtered-results {
+  height: 200px;
+}
