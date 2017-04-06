@@ -27,7 +27,7 @@ class UserDetails extends Component {
       <label>Last Name: </label>{user.name.last}<br />
       <label>Balance: </label>{user.balance}<br />
       <label>Email: </label>{user.email}<br />
-      <label>Phone: </label>{user.phone}
+      <label>Phone: </label>{user.phone}<br />
       <label>Address: </label>{user.address}<br />
       <hr />
     </div>;

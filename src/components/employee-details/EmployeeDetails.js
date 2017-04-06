@@ -13,7 +13,7 @@ class EmployeeDetails extends Component {
 
   render() {
     const { employee } = this.props;
-    console.log('employee', employee);
+
     return <div onClick={ this.handleSelect }>
       <label>Id: </label>{employee._id}<br />
       <label>First Name: </label>{employee.name.first}<br />

@@ -95,6 +95,7 @@ Resizer.disabled:hover {
 .selected-container {
   z-index: 99;
   height: 100%;
+  padding: 15px;
 }
 
 .overflow-container {

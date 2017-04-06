@@ -10,6 +10,7 @@ import EmployeeRecord from '../employee-record/EmployeeRecord';
 import UserDetails from '../user-details/UserDetails';
 import UserRecord from '../user-record/UserRecord';
 import SearchResults from '../search-results/SearchResults';
+import TransactionDetails from '../transaction-details/TransactionDetails';
 import TransactionRecord from '../transaction-record/TransactionRecord';
 
 class App extends Component {
@@ -173,7 +174,7 @@ class App extends Component {
                             updateSelectedRecord={ this.updateSelectedRecord }
                             employee={recordResults1.record} />
                           : recordResults1 && recordResults1.category === 'transaction' ? 
-                          <TransactionRecord
+                          <TransactionDetails
                             updateSelectedRecord={ this.updateSelectedRecord }
                             transaction={recordResults1.record} />
                           : ''
@@ -192,11 +193,11 @@ class App extends Component {
                             updateSelectedRecord={ this.updateSelectedRecord }
                             user={recordResults2.record} />
                           : recordResults2 && recordResults2.category === 'employee' ? 
-                          <EmployeeRecord
+                          <EmployeeDetails
                             updateSelectedRecord={ this.updateSelectedRecord }
                             employee={recordResults2.record} />
                           : recordResults2 && recordResults2.category === 'transaction' ? 
-                          <TransactionRecord
+                          <TransactionDetails
                             updateSelectedRecord={ this.updateSelectedRecord }
                             transaction={recordResults2.record} />
                           : ''
