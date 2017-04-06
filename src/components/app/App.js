@@ -75,7 +75,7 @@ class App extends Component {
     const targetRef = field.concat('Search');
     
     let term = this.refs[targetRef].value.trim();
-    let url = TestApiRouteBase.concat(this.state.category, '/search/', 'email', '/', term);
+    let url = TestApiRouteBase.concat(this.state.category, '/search/', field, '/', term);
 
     return axios.get(url)
       .then(({data}) => {
@@ -143,6 +143,21 @@ class App extends Component {
                   placeholder="Email"
                   onChange={ () => this.rawSearch('email') }
                 />
+                <input
+                  type="text"
+                  ref="phoneSearch"
+                  placeholder="Phone"
+                  onChange={ () => this.rawSearch('phone') }
+                />
+                { this.state.category === 'employees' ?
+                    <input
+                      type="text"
+                      ref="permissionsSearch"
+                      placeholder="Permissions"
+                      onChange={ () => this.rawSearch('permissions') }
+                    />
+                  : ''
+                }
               </div>
               <h2>Filtered Search Results</h2>
               <div id="filtered-results" className="overflow-container">
