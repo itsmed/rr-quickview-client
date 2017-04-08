@@ -39,7 +39,7 @@ class TransactionDetails extends Component {
           <div>
             <label>Id: </label>{transaction._id}<br />
             <label>Date: </label>{transaction.date}<br />
-            <label>Amount: </label>{transaction.amount}<br />
+            <label>Amount: </label>${transaction.amount}<br />
             <label>User Id: </label>{transaction.user_id}<br />
             <hr />
           </div>
