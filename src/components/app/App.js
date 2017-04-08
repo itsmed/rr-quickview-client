@@ -6,12 +6,9 @@ import './App.css';
 import { TestApiRouteBase } from '../../api-routes';
 
 import EmployeeDetails from '../employee-details/EmployeeDetails';
-import EmployeeRecord from '../employee-record/EmployeeRecord';
 import UserDetails from '../user-details/UserDetails';
-import UserRecord from '../user-record/UserRecord';
 import SearchResults from '../search-results/SearchResults';
 import TransactionDetails from '../transaction-details/TransactionDetails';
-import TransactionRecord from '../transaction-record/TransactionRecord';
 
 class App extends Component {
   constructor(props) {
