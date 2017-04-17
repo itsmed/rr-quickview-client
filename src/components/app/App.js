@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import {
   BrowserRouter as Router,
   Route,
-  Link
+  Redirect,
+  Link,
 } from 'react-router-dom';
 
 // import axios from 'axios';
@@ -305,25 +306,64 @@ class App extends Component {
         </SplitPane>
       </div>
     )*/
-    componentWillMount() {
-      console.log('sill mound');
+
+    constructor(props) {
+      super(props)
+
+      this.state = {
+        auth: false
+      }
+
+      this.checkAuth = this.checkAuth.bind(this);
+      this.handleSignOut = this.handleSignOut.bind(this);
     }
+
+    checkAuth() {
+      return localStorage.getItem('quickview-token') === null
+    }
+
+    componentDidMount() {
+     this.checkAuth();  
+    }
+
+    componentWillMount() {
+      this.checkAuth();
+    }
+
+    componentWillReceiveProps(props) {
+      console.log(props);
+      console.log('hlelo');
+    }
+
+    handleSignOut() {
+      localStorage.removeItem('quickview-token');
+      return this.checkAuth();
+    }
+
     render() {
     return <Router>
       <div>
         <nav>
-          <Link to="/">Home</Link>
-          <Link to="/login">Login</Link>
-          <Link to="/not_home">NOt Home</Link>
+          {this.checkAuth() ? '' : <button onClick={ this.handleSignOut }>Sign Out</button>}
+          <ul style={{listStyle: 'none'}}>
+            <li><Link to="/app">Home</Link></li>
+            <li><Link to="/login">Login</Link></li>
+            <li><Link to="/not_home">NOt Home</Link></li>
+          </ul>
         </nav>
         <hr />
 
-        <Route exact path="/" component={Home} />
+        <Route exact path="/" render={() => (
+          this.checkAuth() ? <Redirect to="/login" /> : <Home />
+          )
+        } />
+        <Route exact path="/app" render={ () => (
+          this.checkAuth() ? <Redirect to="/login" /> : <Home />
+        )} />
         <Route path="/not_home" component={NotHome} />
         <Route path="/login" component={Login} />
       </div>
     </Router>
   }
 }
-
 export default App;

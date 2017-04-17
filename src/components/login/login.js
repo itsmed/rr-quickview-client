@@ -17,6 +17,7 @@ class Login extends Component {
     this.handleSignUp = this.handleSignUp.bind(this);
     this.handleSignOut = this.handleSignOut.bind(this);
     this.displayAuthError = this.displayAuthError.bind(this);
+    this.checkAuth = this.checkAuth.bind(this);
   }
 
   handleAuthRequest(e) {
@@ -45,7 +46,7 @@ class Login extends Component {
         this.setState({
           isAuth: !this.state.isAuth
         })
-        return;
+        return this.props.history.push('/app');
       })
       .catch(err => {
         return this.displayAuthError();
@@ -67,19 +68,17 @@ class Login extends Component {
       return this.setState({
         authMessage: ''
       })
-    }, 2500)
+    }, 5500)
+  }
+
+  checkAuth () {
+    return localStorage.getItem('quickview-token') === null;
   }
 
   render() {
     return <div style={{display: 'flex', flexDirection: 'column'}}>
       { 
-      this.state.isAuth ?
-        <button
-          style={{flex: 1}}
-          onClick={ this.handleSignOut }
-        >
-        Sign Out</button>
-      :
+      this.checkAuth() ?
         <div style={{display: 'flex', flexDirection: 'column'}}>
           <h3>{ this.state.authMessage }</h3>
           <input
@@ -107,6 +106,12 @@ class Login extends Component {
             style={{flex: 1}}
           />
         </div>
+      :
+        <button
+          style={{flex: 1}}
+          onClick={ this.handleSignOut }
+        >
+        Sign Out</button>
       }
     </div>;
   }
