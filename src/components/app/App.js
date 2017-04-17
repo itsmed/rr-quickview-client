@@ -1,20 +1,42 @@
 import React, { Component } from 'react'
-import axios from 'axios';
-import SplitPane from 'react-split-pane';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom';
 
-import './App.css';
-import { TestApiRouteBase } from '../../api-routes';
+// import axios from 'axios';
+// import SplitPane from 'react-split-pane';
 
-import EmployeeDetails from '../employee-details/EmployeeDetails';
-import UserDetails from '../user-details/UserDetails';
-import SearchResults from '../search-results/SearchResults';
-import TransactionDetails from '../transaction-details/TransactionDetails';
+// import './App.css';
+// import { TestApiRouteBase } from '../../api-routes';
+
+// import EmployeeDetails from '../employee-details/EmployeeDetails';
+// import UserDetails from '../user-details/UserDetails';
+// import SearchResults from '../search-results/SearchResults';
+// import TransactionDetails from '../transaction-details/TransactionDetails';
+
+import Login from '../login/login';
+
+const Home = () => (
+<div>
+  <h1>Home</h1>
+</div>
+);
+
+const NotHome = () => (
+  <div>
+    <h1>Not HOme</h1>
+  </div>
+);
+
 
 class App extends Component {
-  constructor(props) {
+  /*constructor(props) {
     super(props);
 
     this.state = {
+      auth: false,
       category: 'users',
       searchResults: [],
       filteredResults: [],
@@ -23,6 +45,8 @@ class App extends Component {
       recordResults2: null,
     };
 
+    this.handleAuth = this.handleAuth.bind(this);
+    this.handleSignUp = this.handleSignUp.bind(this);
     this.updateCategory = this.updateCategory.bind(this);
     this.categorySearch = this.categorySearch.bind(this);
     this.updateSelectedRecord = this.updateSelectedRecord.bind(this);
@@ -39,6 +63,26 @@ class App extends Component {
     });
     this.refs.idSearch.value = '';
     this.refs.idSearch.focus();
+  }
+
+  handleAuth() {
+    const { username, password } = this.refs;
+    const un = username.value;
+    const pw = password.value;
+
+    axios.post(TestApiRouteBase.concat('auth/signin'), { username: un, password: pw})
+      .then(res => {
+        console.log(res.data.token)
+      })
+      .catch(err => {
+        console.log(err.status, err.message)
+      });
+    username.value = '';
+    password.value = '';
+  }
+
+  handleSignUp() {
+
   }
 
   updateCategory(e) {
@@ -127,7 +171,19 @@ class App extends Component {
 
     return (
       <div>
-        <h1>quickView</h1>
+        <header>
+          <h1>quickView</h1>
+          { this.state.auth ?
+            <button onClick={ this.handleAuth }>Sign Out</button>
+          :
+            <div style={{display: 'flex', flexDirection: 'column'}}>
+              <input style={{flex: 1}} type="text" placeholder="username" ref="username" />
+              <input style={{flex: 1}} type="text" placeholder="password" ref="password" />
+              <button style={{flex: 1}} onClick={ this.handleAuth }>Sign In</button>
+              <button style={{flex: 1}} onClick={ this.handleSignUp }>Sign Up</button>
+            </div>
+          }
+        </header>
         <SplitPane split="vertical" minSize={10} defaultSize={150}>
             <div style={{backgroundColor: 'palegreen'}} className="overflow-container">
               <div>
@@ -248,7 +304,25 @@ class App extends Component {
             </SplitPane>
         </SplitPane>
       </div>
-    )
+    )*/
+    componentWillMount() {
+      console.log('sill mound');
+    }
+    render() {
+    return <Router>
+      <div>
+        <nav>
+          <Link to="/">Home</Link>
+          <Link to="/login">Login</Link>
+          <Link to="/not_home">NOt Home</Link>
+        </nav>
+        <hr />
+
+        <Route exact path="/" component={Home} />
+        <Route path="/not_home" component={NotHome} />
+        <Route path="/login" component={Login} />
+      </div>
+    </Router>
   }
 }
 
