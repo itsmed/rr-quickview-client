@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import { getDataList } from '../../actions';
+
 import SplitPane from 'react-split-pane';
 
 import EmployeeDetails from '../../components/employee-details/EmployeeDetails';
@@ -35,6 +37,9 @@ class DashBoard extends Component {
     this.handleIdSearch = this.handleIdSearch.bind(this);
     this.rawSearch = this.rawSearch.bind(this);
     this.getTransactionsByUserId = this.getTransactionsByUserId.bind(this);
+
+
+    this.requestDataList = this.requestDataList.bind(this);
   }
 
   componentDidMount() {
@@ -147,18 +152,25 @@ class DashBoard extends Component {
     });
   }
 
+  /*New*/
+  requestDataList(category) {
+    this.props.getDataList(category);
+  }
 
   render() {
     const { category, searchResults, filteredResults, recordResults1, recordResults2 } = this.state;
+
+    const { allUsers } = this.props;
     return <div>
       <SplitPane split="vertical" minSize={10} defaultSize={150}>
           <div style={{backgroundColor: 'palegreen'}} className="overflow-container">
             <div>
-            <ul>
-              <li style={{margin: '10px'}} onClick={ this.updateCategory }>Users</li>
-              <li style={{margin: '10px'}} onClick={ this.updateCategory }>Transactions</li>
-              <li style={{margin: '10px'}} onClick={ this.updateCategory }>Employees</li>
+            <ul className="side_nav">
+              {
+                this.props.categories.map(c => <li key={c} className="side_nav_items"><button onClick={ () => this.requestDataList(c) }>Set Category {c.toUpperCase()}</button></li>)
+              }
             </ul>
+            <button onClick={ this.requestDataList }>Get ALL USers</button>
               <input
                 type="text"
                 ref="idSearch"
@@ -213,7 +225,7 @@ class DashBoard extends Component {
                 <div>
                   <h2>{ category.toUpperCase() } Search Results</h2>
                   <SearchResults
-                    searchResults={ searchResults }
+                    searchResults={ allUsers }
                     category={ category }
                     updateSelectedRecord={ this.updateSelectedRecord }
                   />
@@ -276,8 +288,9 @@ class DashBoard extends Component {
 
 function mapStateToProps(state) {
   return {
-    state
+    allUsers: state.users.allUsers,
+    categories: state.searchCategories,
   };
 }
 
-export default connect(mapStateToProps)(DashBoard);
+export default connect(mapStateToProps, { getDataList })(DashBoard);

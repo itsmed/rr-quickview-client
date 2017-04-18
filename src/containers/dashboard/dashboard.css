@@ -105,3 +105,11 @@ Resizer.disabled:hover {
 #filtered-results {
   height: 200px;
 }
+
+.side_nav {
+  list-style: none;
+}
+
+.side_nav_items {
+  margin: 4px;
+}
