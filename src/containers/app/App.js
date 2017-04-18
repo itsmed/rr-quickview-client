@@ -9,7 +9,7 @@ import {
 import { connect } from 'react-redux';
 import { checkToken } from '../../actions';
 
-// import './App.css';
+import './App.css';
 
 import Login from '../login/Login';
 import Landing from '../../components/landing/Landing';
@@ -19,14 +19,7 @@ import NoMatch from '../../components/noMatch/NoMatch';
 
 
 const FetchingModal = (props) => (
-  <div style={{
-    minHeight: '400px',
-    width: '100%',
-    zIndex: 9999,
-    backgroundColor: 'black',
-    opacity: '0.7',
-    color: 'white'
-  }}>
+  <div  className="fetching-modal">
     <h1>Loading</h1>
   </div>
 );
