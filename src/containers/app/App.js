@@ -3,6 +3,7 @@ import {
   BrowserRouter as Router,
   Route,
   Redirect,
+  Switch
 } from 'react-router-dom';
 
 import { connect } from 'react-redux';
@@ -22,6 +23,7 @@ import Login from '../login/Login';
 import Landing from '../../components/landing/Landing';
 import Header from '../header/Header';
 import Dashboard from '../dashboard/Dashboard';
+import NoMatch from '../../components/noMatch/NoMatch';
 
 class App extends Component {
   /*constructor(props) {
@@ -306,13 +308,16 @@ class App extends Component {
     return <Router>
       <div>
         <Header />
-        <Route exact path="/" component={Landing} />
-        <Route exact path="/dashboard" render={ () => (
-          this.props.isAuth ? 
-            <Dashboard /> 
-            : <Redirect to="/login" />
-        )} />
-        <Route path="/login" component={Login} />
+        <Switch>
+          <Route exact path="/" component={Landing} />
+          <Route exact path="/dashboard" render={ () => (
+            this.props.isAuth ? 
+              <Dashboard /> 
+              : <Redirect to="/login" />
+          )} />
+          <Route path="/login" component={Login} />
+          <Route component={NoMatch} />
+        </Switch>
       </div>
     </Router>
   }
