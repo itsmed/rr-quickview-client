@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // import axios from 'axios';
 
 import { connect } from 'react-redux';
-import { makeTokenRequest, checkToken, unauthUser } from '../../makeStore';
+import { makeTokenRequest, checkToken, unauthUser } from '../../actions';
 
 // import { TestApiRouteBase } from '../../api-routes';
 
