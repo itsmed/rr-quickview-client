@@ -13,6 +13,8 @@ import {
   UNAUTH_USER,
 } from './types';
 
+import { TestApiRouteBase } from '../api-routes';
+
 export function makeTokenRequest(username, password) {
   return dispatch => {
     dispatch(toggleIsFetching());
@@ -42,8 +44,8 @@ function receiveTokenSuccess(token) {
 
 function receiveTokenFailure(reason) {
   return dispatch => {
-    dispatch(unauthUser(reason));
     dispatch(toggleIsFetching());
+    dispatch(unauthUser(reason));
   }
 }
 

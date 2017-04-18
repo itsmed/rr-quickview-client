@@ -34,9 +34,8 @@ class UserDetails extends Component {
               style={{width: '100px'}} 
             />
             <br />
-            <label>Id: </label>{user._id}<br />
+            <label>Id: </label>{user.userId}<br />
             <label>Active: </label>{user.isActive.toString()} <button>Toggle Active</button><br />
-            <label>Registered: </label>{user.registered}<br />
             <label>First Name: </label> <input type="text" style={{width: '100%'}} placeholder={user.name.first} /><br />
             <label>Last Name: </label> <input type="text" style={{width: '100%'}} placeholder={user.name.last} /><br />
             <label>Balance: </label> <input type="text" style={{width: '100%'}} placeholder={user.balance} /><button>Add</button><button>Subtract</button><br />
@@ -52,9 +51,8 @@ class UserDetails extends Component {
               style={{width: '100px'}} 
             />
             <br />
-            <label>Id: </label>{user._id}<br />
+            <label>Id: </label>{user.userId}<br />
             <label>Active: </label>{user.isActive.toString()}<br />
-            <label>Registered: </label>{user.registered}<br />
             <label>First Name: </label>{user.name.first}<br />
             <label>Last Name: </label>{user.name.last}<br />
             <label>Balance: </label>${user.balance}<br />
