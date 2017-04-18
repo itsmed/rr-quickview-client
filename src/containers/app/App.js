@@ -9,15 +9,7 @@ import {
 import { connect } from 'react-redux';
 import { checkToken } from '../../actions';
 
-// import SplitPane from 'react-split-pane';
-
 // import './App.css';
-// import { TestApiRouteBase } from '../../api-routes';
-
-// import EmployeeDetails from '../employee-details/EmployeeDetails';
-// import UserDetails from '../user-details/UserDetails';
-// import SearchResults from '../search-results/SearchResults';
-// import TransactionDetails from '../transaction-details/TransactionDetails';
 
 import Login from '../login/Login';
 import Landing from '../../components/landing/Landing';
@@ -174,8 +166,8 @@ class App extends Component {
     });
   }
 
-  render() {
     const { category, searchResults, filteredResults, recordResults1, recordResults2 } = this.state;
+  render() {
 
     return (
       <div>
@@ -318,8 +310,11 @@ class App extends Component {
       super(props);
     }
 
+    componentWillMount() {
+      this.props.checkToken();
+    }
+
     render() {
-      console.log('app', this.props);
     return <div>
       {
         this.props.isFetching ?
