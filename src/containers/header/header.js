@@ -13,7 +13,7 @@ class Header extends Component {
     this.handleSignOut = this.handleSignOut.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.checkToken();
   }
 
