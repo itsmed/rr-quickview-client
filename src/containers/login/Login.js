@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { makeTokenRequest, checkToken, unauthUser } from '../../actions';
 
-import Header from '../header/Header';
 
 // import { TestApiRouteBase } from '../../api-routes';
 
@@ -25,12 +24,10 @@ class Login extends Component {
     this.displayAuthError = this.displayAuthError.bind(this);
     this.checkAuth = this.checkAuth.bind(this);
   }
-    componentWillMount() {
-      this.props.checkToken();
-      // if (this.props.auth.user) {
-      //   this.
-      // }
-    }
+
+  componentWillMount() {
+    this.props.checkToken();
+  }
 
   componentWillShouldProps(one, two) {
     console.log('args', arguments);
@@ -39,7 +36,7 @@ class Login extends Component {
   componentWillReceiveProps(nextProps) {
     console.log(nextProps);
     if (nextProps.isAuth) {
-      this.props.history.push('/app')
+      this.props.history.push('/dashboard')
     }
   }
 
@@ -85,9 +82,7 @@ class Login extends Component {
   }
 
   render() {
-    console.log('thi', this.props);
     return <div style={{display: 'flex', flexDirection: 'column'}}>
-      <Header />
       <h3>{ this.state.authMessage }</h3>
       <input
         type="text"
@@ -118,8 +113,8 @@ class Login extends Component {
 }
 
 const mapStateToProps = state => ({
-  isAuth: state.isAuth,
-  user: state.user
+  isAuth: state.auth.isAuth,
+  user: state.auth.user
 });
 
 export default connect(mapStateToProps, { checkToken, makeTokenRequest, unauthUser })(Login);

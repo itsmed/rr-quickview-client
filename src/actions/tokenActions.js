@@ -25,7 +25,6 @@ export function makeTokenRequest(username, password) {
 export function checkToken() {
   return dispatch => {
     let token = localStorage.getItem('hero-token');
-    console.log('token', token);
     if (token === '' || token === null) {
       return dispatch(unauthUser('No data present'));
     } else {
@@ -49,7 +48,6 @@ function receiveTokenFailure(reason) {
 }
 
 export function unauthUser(reason) {
-  // figure out how to navigate 
   if(localStorage.getItem('hero-token')) {
     localStorage.removeItem('hero-token');
   }

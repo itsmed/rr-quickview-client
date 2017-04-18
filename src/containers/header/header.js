@@ -4,13 +4,17 @@ import {
   Link
 } from 'react-router-dom';
 
-import { unauthUser } from '../../actions';
+import { unauthUser, checkToken } from '../../actions';
 
 class Header extends Component {
   constructor(props) {
     super(props);
 
     this.handleSignOut = this.handleSignOut.bind(this);
+  }
+
+  componentWillMount() {
+    this.props.checkToken();
   }
 
   handleSignOut() {
@@ -26,11 +30,18 @@ class Header extends Component {
       <nav>
         <ul style={{listStyle: 'none'}}>
           <li><Link to="/">Home</Link></li>
-          <li><Link to="/login">Log In</Link></li>
-          <li>add{ this.props.isAuth ? 
-            <Link to="/dashboard">Dashboard</Link>
-            : ''
-          }</li>
+          <li>
+            { this.props.isAuth ?
+              ''
+              :  <Link to="/login">Log In</Link>
+            }
+          </li> 
+          <li>
+            { this.props.isAuth ? 
+              <Link to="/dashboard">Dashboard</Link>
+              : ''
+            }
+          </li>
         </ul>
       </nav>
     </header>;
@@ -39,8 +50,8 @@ class Header extends Component {
 
 function mapStateToProps(state) {
   return {
-    isAuth: state.isAuth
+    isAuth: state.auth.isAuth
   };
 }
 
-export default connect(mapStateToProps, { unauthUser })(Header);
+export default connect(mapStateToProps, { unauthUser, checkToken })(Header);

@@ -3,13 +3,11 @@ import {
   BrowserRouter as Router,
   Route,
   Redirect,
-  Link,
 } from 'react-router-dom';
 
 import { connect } from 'react-redux';
-import { unauthUser } from '../../actions';
+import { checkToken } from '../../actions';
 
-// import axios from 'axios';
 // import SplitPane from 'react-split-pane';
 
 // import './App.css';
@@ -22,19 +20,8 @@ import { unauthUser } from '../../actions';
 
 import Login from '../login/Login';
 import Landing from '../../components/landing/Landing';
-
-const Home = () => (
-<div>
-  <h1>Home</h1>
-</div>
-);
-
-const NotHome = () => (
-  <div>
-    <h1>Not HOme</h1>
-  </div>
-);
-
+import Header from '../header/Header';
+import Dashboard from '../dashboard/Dashboard';
 
 class App extends Component {
   /*constructor(props) {
@@ -312,62 +299,19 @@ class App extends Component {
     )*/
 
     constructor(props) {
-      super(props)
-
-      this.state = {
-        auth: false
-      }
-
-      this.getAuth = this.getAuth.bind(this);
-
-      this.checkAuth = this.checkAuth.bind(this);
-      this.handleSignOut = this.handleSignOut.bind(this);
-    }
-
-    checkAuth() {
-      return localStorage.getItem('hero-token') === null
-    }
-
-    componentDidMount() {
-     this.checkAuth();  
-    }
-
-    componentWillMount() {
-      this.checkAuth();
-    }
-
-    getAuth() {
-      return this.props.isAuth;
-    }
-
-    componentWillReceiveProps(props) {
-      console.log(props);
-      console.log('hlelo');
-    }
-
-    handleSignOut() {
-      this.props.unauthUser();
+      super(props);
     }
 
     render() {
     return <Router>
       <div>
-        <nav>
-          {this.checkAuth() ? '' : <button onClick={ this.handleSignOut }>Sign Out</button>}
-          <ul style={{listStyle: 'none'}}>
-            <li><Link to="/app">Home</Link></li>
-            <li><Link to="/login">Login</Link></li>
-            <li><Link to="/not_home">NOt Home</Link></li>
-          </ul>
-          { this.getAuth() ? <button onClick={ this.handleSignOut }>Sign Out</button> : '' }
-        </nav>
-        <hr />
-
+        <Header />
         <Route exact path="/" component={Landing} />
-        <Route exact path="/app" render={ () => (
-          this.checkAuth() ? <Redirect to="/login" /> : <Home />
+        <Route exact path="/dashboard" render={ () => (
+          this.props.isAuth ? 
+            <Dashboard /> 
+            : <Redirect to="/login" />
         )} />
-        <Route path="/not_home" component={NotHome} />
         <Route path="/login" component={Login} />
       </div>
     </Router>
@@ -375,7 +319,7 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  isAuth: state.isAuth,
+  isAuth: state.auth.isAuth,
 });
 
-export default connect(mapStateToProps, { unauthUser })(App);
+export default connect(mapStateToProps, { checkToken })(App);
