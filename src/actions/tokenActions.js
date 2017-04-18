@@ -24,6 +24,7 @@ export function makeTokenRequest(username, password) {
 
 export function checkToken() {
   return dispatch => {
+    console.log('calling checkToken');
     let token = localStorage.getItem('hero-token');
     if (token === '' || token === null) {
       return dispatch(unauthUser('No data present'));
@@ -42,8 +43,8 @@ function receiveTokenSuccess(token) {
 
 function receiveTokenFailure(reason) {
   return dispatch => {
-    dispatch(unauthUser(reason));
     dispatch(toggleIsFetching());
+    dispatch(unauthUser(reason));
   }
 }
 
