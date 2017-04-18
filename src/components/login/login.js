@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 
-import { TestApiRouteBase } from '../../api-routes';
+import { connect } from 'react-redux';
+import { makeTokenRequest, checkToken, unauthUser } from '../../makeStore';
+
+// import { TestApiRouteBase } from '../../api-routes';
 
 class Login extends Component {
   constructor(props) {
@@ -12,12 +15,25 @@ class Login extends Component {
       isAuth: false,
     }
 
+
     this.handleAuthRequest = this.handleAuthRequest.bind(this);
     this.handleSignIn = this.handleSignIn.bind(this);
     this.handleSignUp = this.handleSignUp.bind(this);
     this.handleSignOut = this.handleSignOut.bind(this);
     this.displayAuthError = this.displayAuthError.bind(this);
     this.checkAuth = this.checkAuth.bind(this);
+  }
+    componentWillMount() {
+      this.props.checkToken();
+      // if (this.props.auth.user) {
+      //   this.
+      // }
+    }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isAuth) {
+      this.props.history.push('/app')
+    }
   }
 
   handleAuthRequest(e) {
@@ -40,24 +56,14 @@ class Login extends Component {
   handleSignUp(username, pasword) {}
 
   handleSignIn(username, password) {
-    return axios.post(TestApiRouteBase.concat('auth/signin'), {username, password})
-      .then(res => {
-        localStorage.setItem('quickview-token', res.data.token);
-        this.setState({
-          isAuth: !this.state.isAuth
-        })
-        return this.props.history.push('/app');
-      })
-      .catch(err => {
-        return this.displayAuthError();
-      });
+    this.props.makeTokenRequest(username, password);
+    if(this.props.isAuth) {
+      this.props.history.push('/app');
+    }
   }
 
   handleSignOut() {
-    localStorage.removeItem('quickview-token');
-    this.setState({
-      isAuth: !this.state.isAuth
-    });
+    this.props.unauthUser();
   }
 
   displayAuthError(message = 'Authentication failed, try again') {
@@ -76,6 +82,7 @@ class Login extends Component {
   }
 
   render() {
+    console.log('thi', this.props);
     return <div style={{display: 'flex', flexDirection: 'column'}}>
       { 
       this.checkAuth() ?
@@ -117,4 +124,9 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToProps = state => ({
+  isAuth: state.isAuth,
+  user: state.user
+});
+
+export default connect(mapStateToProps, { checkToken, makeTokenRequest, unauthUser })(Login);

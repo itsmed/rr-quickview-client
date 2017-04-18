@@ -6,6 +6,9 @@ import {
   Link,
 } from 'react-router-dom';
 
+import { connect } from 'react-redux';
+import { unauthUser } from '../../makeStore';
+
 // import axios from 'axios';
 // import SplitPane from 'react-split-pane';
 
@@ -314,12 +317,14 @@ class App extends Component {
         auth: false
       }
 
+      this.getAuth = this.getAuth.bind(this);
+
       this.checkAuth = this.checkAuth.bind(this);
       this.handleSignOut = this.handleSignOut.bind(this);
     }
 
     checkAuth() {
-      return localStorage.getItem('quickview-token') === null
+      return localStorage.getItem('hero-token') === null
     }
 
     componentDidMount() {
@@ -330,14 +335,17 @@ class App extends Component {
       this.checkAuth();
     }
 
+    getAuth() {
+      return this.props.isAuth;
+    }
+
     componentWillReceiveProps(props) {
       console.log(props);
       console.log('hlelo');
     }
 
     handleSignOut() {
-      localStorage.removeItem('quickview-token');
-      return this.checkAuth();
+      this.props.unauthUser();
     }
 
     render() {
@@ -350,6 +358,7 @@ class App extends Component {
             <li><Link to="/login">Login</Link></li>
             <li><Link to="/not_home">NOt Home</Link></li>
           </ul>
+          { this.getAuth() ? <button onClick={ this.handleSignOut }>Sign Out</button> : '' }
         </nav>
         <hr />
 
@@ -366,4 +375,9 @@ class App extends Component {
     </Router>
   }
 }
-export default App;
+
+const mapStateToProps = state => ({
+  isAuth: state.isAuth,
+});
+
+export default connect(mapStateToProps, { unauthUser })(App);
