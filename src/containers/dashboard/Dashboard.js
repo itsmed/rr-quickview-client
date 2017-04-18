@@ -170,7 +170,6 @@ class DashBoard extends Component {
                 this.props.categories.map(c => <li key={c} className="side_nav_items"><button onClick={ () => this.requestDataList(c) }>Set Category {c.toUpperCase()}</button></li>)
               }
             </ul>
-            <button onClick={ this.requestDataList }>Get ALL USers</button>
               <input
                 type="text"
                 ref="idSearch"
