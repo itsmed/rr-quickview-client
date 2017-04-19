@@ -16,3 +16,6 @@ export {
   checkToken,
   unauthUser
 } from './authActions/authActions';
+
+
+export { requestCollectionData } from './requestCollectionData/requestCollectionData';
