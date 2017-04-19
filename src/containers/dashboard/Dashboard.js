@@ -189,22 +189,22 @@ class DashBoard extends Component {
             </div>
             <h2>Filtered Search Results</h2>
             <div id="filtered-results" className="overflow-container">
-              <SearchResults
+             {/*} <SearchResults
                 searchResults={ filteredResults }
                 category={ category }
                 updateSelectedRecord={ this.updateSelectedRecord }
-              />
+              /> */}
             </div>
           </div>
           <SplitPane split="horizontal" minSize={10} defaultSize={350}>
               <div style={{backgroundColor: 'lavender'}} className="overflow-container">
                 <div>
                   <h2>{ category.toUpperCase() } Search Results</h2>
-                  <SearchResults
+                  {/*<SearchResults
                     searchResults={ allUsers }
                     category={ category }
                     updateSelectedRecord={ this.updateSelectedRecord }
-                  />
+                  />*/}
                 </div>
               </div>
               <div style={{backgroundColor: 'mediumaquamarine', zIndex: '999'}}>
@@ -264,7 +264,7 @@ class DashBoard extends Component {
 
 function mapStateToProps(state) {
   return {
-    allUsers: state.users.allUsers,
+    // allUsers: state.users.allUsers,
     categories: state.searchCategories,
   };
 }

@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 
 import { authReducer } from './auth/authReducer';
 import { isFetching } from './isFetching/isFetching';
-import { getUsers } from './getUsers/getUsers';
+import { apiErrorReducer } from './apiError/apiError';
 
 const searchCategories = () => ['users', 'employees', 'transactions'];
 
@@ -10,7 +10,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   isFetching,
   searchCategories,
-  users: getUsers
+  apiErrorMessage: apiErrorReducer,
 });
 
 export default rootReducer;

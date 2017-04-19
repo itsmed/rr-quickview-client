@@ -28,6 +28,7 @@ class Header extends Component {
         : ''
       }
       <nav>
+        <h3>{ this.props.errorMessage }</h3>
         <ul style={{listStyle: 'none'}}>
           <li><Link to="/">Home</Link></li>
           <li>
@@ -50,7 +51,8 @@ class Header extends Component {
 
 function mapStateToProps(state) {
   return {
-    isAuth: state.auth.isAuth
+    isAuth: state.auth.isAuth,
+    errorMessage: state.apiErrorMessage,
   };
 }
 
