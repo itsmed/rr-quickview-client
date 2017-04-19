@@ -13,12 +13,12 @@ import {
   UNAUTH_USER,
 } from '../types';
 
-import { TestApiRouteBase } from '../../api-routes';
+import { API_ROUTE_BASE } from '../../api-routes';
 
 export function makeTokenRequest(username, password) {
   return dispatch => {
     dispatch(toggleIsFetching());
-    return axios.post('http://localhost:3000/api/auth/signin', { username, password })
+    return axios.post(API_ROUTE_BASE + 'auth/signin', { username, password })
       .then(res => dispatch(receiveTokenSuccess(res.data.token)))
       .catch(err => dispatch(receiveTokenFailure(err.message)));
   }
