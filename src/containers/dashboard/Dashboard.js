@@ -19,7 +19,6 @@ class DashBoard extends Component {
     super(props);
 
     this.state = {
-      auth: false,
       category: 'users',
       searchResults: [],
       filteredResults: [],
@@ -28,8 +27,6 @@ class DashBoard extends Component {
       recordResults2: null,
     };
 
-    this.handleAuth = this.handleAuth.bind(this);
-    this.handleSignUp = this.handleSignUp.bind(this);
     this.updateCategory = this.updateCategory.bind(this);
     this.categorySearch = this.categorySearch.bind(this);
     this.updateSelectedRecord = this.updateSelectedRecord.bind(this);
@@ -51,27 +48,7 @@ class DashBoard extends Component {
     this.refs.idSearch.focus();
   }
 
-  handleAuth() {
-    const { username, password } = this.refs;
-    const un = username.value;
-    const pw = password.value;
-
-    axios.post(TestApiRouteBase.concat('auth/signin'), { username: un, password: pw})
-      .then(res => {
-        console.log(res.data.token)
-      })
-      .catch(err => {
-        console.log(err.status, err.message)
-      });
-    username.value = '';
-    password.value = '';
-  }
-
-  handleSignUp() {
-
-  }
-
-  updateCategory(e) {
+    updateCategory(e) {
     this.setState({
       category: e.target.textContent.toLowerCase(),
     });

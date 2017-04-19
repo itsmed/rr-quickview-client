@@ -6,14 +6,14 @@ import axios from 'axios';
 //   checkToken,
 // } from './';
 
-import { toggleIsFetching } from './toggleIsFetching/toggleIsFetching';
+import { toggleIsFetching } from '../toggleIsFetching/toggleIsFetching';
 
 import {
   AUTH_USER,
   UNAUTH_USER,
-} from './types';
+} from '../types';
 
-import { TestApiRouteBase } from '../api-routes';
+import { TestApiRouteBase } from '../../api-routes';
 
 export function makeTokenRequest(username, password) {
   return dispatch => {

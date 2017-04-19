@@ -18,7 +18,7 @@ class SearchResults extends Component {
 
   render() {
     const { updateSelectedRecord, searchResults, searchCategory } = this.props;
-    console.log('this.props', this.props);
+
     return <ul>
       {
         this.props[this.props.searchCategory].map(r => {

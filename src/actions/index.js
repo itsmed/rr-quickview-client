@@ -12,7 +12,7 @@ export {
   makeTokenRequest,
   checkToken,
   unauthUser
-} from './tokenActions';
+} from './authActions/authActions';
 
 export {
   getDataList,
