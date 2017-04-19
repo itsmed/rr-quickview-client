@@ -7,6 +7,7 @@ export {
   RECEIVE_USERS,
   RECEIVE_TRANSACTIONS,
   RECEIVE_FILTERED_RESULTS,
+  UPDATE_SEARCH_CATEGORY,
 } from './types';
 
 export { toggleIsFetching } from './toggleIsFetching/toggleIsFetching';
@@ -17,5 +18,5 @@ export {
   unauthUser
 } from './authActions/authActions';
 
-
+export { updateSearchCategory } from './updateCategory/updateCategory';
 export { requestCollectionData } from './requestCollectionData/requestCollectionData';

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { requestCollectionData } from '../../actions';
+import { requestCollectionData, updateSearchCategory } from '../../actions';
 
 import SplitPane from 'react-split-pane';
 
@@ -17,7 +17,6 @@ class DashBoard extends Component {
     super(props);
 
     this.state = {
-      category: 'users',
       searchResults: [],
       filteredResults: [],
       selectedContainer: '',
@@ -41,11 +40,9 @@ class DashBoard extends Component {
     this.refs.idSearch.focus();
   }
 
-  updateCategory(e) {
-    this.setState({
-      category: e.target.textContent.toLowerCase(),
-    });
-    return this.requestDataList(this.state.category);
+  updateCategory(category) {
+    this.props.updateSearchCategory(category);
+    this.requestDataList(category);
   }
 
   updateSelectedRecord(category, record) {
@@ -74,13 +71,12 @@ class DashBoard extends Component {
   }
 
   requestDataList(category) {
-    this.props.requestCollectionData(category, 'all');
+    return this.props.requestCollectionData(category, 'all');
   }
 
   render() {
-    const { category, searchResults, recordResults1, recordResults2 } = this.state;
-
-    const { users, transactions, employees, filteredResults } = this.props;
+    const { searchResults, recordResults1, recordResults2 } = this.state;
+    const { category, users, transactions, employees, filteredResults } = this.props;
     return <div>
       <SplitPane split="vertical" minSize={10} defaultSize={150}>
           <div style={{backgroundColor: 'palegreen'}} className="overflow-container">
@@ -88,7 +84,7 @@ class DashBoard extends Component {
             <label>Set Category</label>
             <ul className="side_nav">
               {
-                this.props.categories.map(c => <li key={c} className="side_nav_items"><button onClick={ () => this.requestDataList(c) }>{c.toUpperCase()}</button></li>)
+                this.props.categories.map(c => <li key={c} className="side_nav_items"><button onClick={ () => this.updateCategory(c) }>{c.toUpperCase()}</button></li>)
               }
             </ul>
               <input
@@ -138,11 +134,11 @@ class DashBoard extends Component {
               <div style={{backgroundColor: 'lavender'}} className="overflow-container">
                 <div>
                   <h2>{ category.toUpperCase() } Search Results</h2>
-                  {<SearchResults
-                    searchResults={ this.props.users }
+                  <SearchResults
+                    searchResults={ this.props[category] }
                     category={ category }
                     updateSelectedRecord={ this.updateSelectedRecord }
-                  />}
+                  />
                 </div>
               </div>
               <div style={{backgroundColor: 'mediumaquamarine', zIndex: '999'}}>
@@ -202,6 +198,7 @@ class DashBoard extends Component {
 
 function mapStateToProps(state) {
   return {
+    category: state.category,
     categories: state.searchCategories,
     employees: state.data.employees,
     filteredResults: state.data.filteredResults,
@@ -210,4 +207,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { requestCollectionData })(DashBoard);
+export default connect(mapStateToProps, { requestCollectionData, updateSearchCategory })(DashBoard);
