@@ -22,17 +22,20 @@ export function requestCollectionData(collection, filter, param) {
     return axios.get(requestUrl)
       .then(res => dispatch(receiveCollectionDataSuccess(collection, filter, res.data)))
       .catch(err => {
-        console.log('this is expected', err.message);
-        dispatch(apiError(err.message));
+        console.log('error?', err);
+        // dispatch(toggleIsFetching());
+        return dispatch(apiError(err.message));
       });
   }
 }
 
 function receiveCollectionDataSuccess(collection, filter, payload) {
   return dispatch => {
-    if (payload.error !== null) {
-      return dispatch(apiError(payload.error))
-    }
+    // if (payload.error !== null) {
+    //   console.log('payload error!', payload.error);
+    //   // dispatch(toggleIsFetching());
+    //   return dispatch(toggleIsFetching());
+    // }
     switch(collection) {
       case 'employees':
         return dispatch(fetchEmployeesSuccess(filter, payload));

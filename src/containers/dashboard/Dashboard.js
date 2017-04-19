@@ -10,9 +10,7 @@ import UserDetails from '../../components/user-details/UserDetails';
 import SearchResults from '../../components/search-results/SearchResults';
 import TransactionDetails from '../../components/transaction-details/TransactionDetails';
 
-import './dashboard.css'
-import axios from 'axios'
-const TestApiRouteBase = 'http://localhost:3000/api/';
+import './dashboard.css';
 
 class DashBoard extends Component {
   constructor(props) {
@@ -28,19 +26,14 @@ class DashBoard extends Component {
     };
 
     this.updateCategory = this.updateCategory.bind(this);
-    this.categorySearch = this.categorySearch.bind(this);
     this.updateSelectedRecord = this.updateSelectedRecord.bind(this);
     this.selectContainer = this.selectContainer.bind(this);
-    this.handleIdSearch = this.handleIdSearch.bind(this);
-    this.rawSearch = this.rawSearch.bind(this);
-    this.getTransactionsByUserId = this.getTransactionsByUserId.bind(this);
 
 
     this.requestDataList = this.requestDataList.bind(this);
   }
 
   componentDidMount() {
-    this.categorySearch(this.state.category);
     this.setState({
       selectedContainer: this.refs.container1,
     });
@@ -48,60 +41,11 @@ class DashBoard extends Component {
     this.refs.idSearch.focus();
   }
 
-    updateCategory(e) {
+  updateCategory(e) {
     this.setState({
       category: e.target.textContent.toLowerCase(),
     });
-    return this.categorySearch(e.target.textContent.toLowerCase());
-  }
-
-  categorySearch(category) {
-    axios.get(TestApiRouteBase.concat(category, '/all'))
-      .then(({data}) => this.setState({
-        searchResults: data.data,
-      }))
-      .catch(err => console.log('err', err));
-  }
-
-  handleIdSearch() {
-    let term = this.refs.idSearch.value.trim();
-
-    axios.get(TestApiRouteBase.concat(this.state.category, '/id/', term))
-      .then(({data}) => {
-        this.setState({
-          filteredResults: [ data.data ]
-        })
-      })
-      .catch(err => console.warn('error in handle id search', err.message));
-  }
-
-  getTransactionsByUserId() {
-    let url = TestApiRouteBase.concat('transactions/user/id/', this.refs.userIdSearch.value);
-
-    return axios.get(url)
-      .then(({data}) => {
-        console.log('data from user id', data);
-        this.setState({
-          filteredResults: data.data,
-        })
-      })
-      .catch(err => console.warn('Error getting user by id', err.message));
-  }
-
-  rawSearch(field) {
-    // http://localhost:3000/api/users/search/name/:name
-    const targetRef = field.concat('Search');
-    
-    let term = this.refs[targetRef].value.trim();
-    let url = TestApiRouteBase.concat(this.state.category, '/search/', field, '/', term);
-
-    return axios.get(url)
-      .then(({data}) => {
-        this.setState({
-          filteredResults: data.data,
-        });
-      })
-      .catch(err => console.warn('error in raw serch', err.message));
+    return this.requestDataList(this.state.category);
   }
 
   updateSelectedRecord(category, record) {
@@ -129,82 +73,76 @@ class DashBoard extends Component {
     });
   }
 
-  /*New*/
   requestDataList(category) {
     this.props.requestCollectionData(category, 'all');
   }
 
   render() {
-    const { category, searchResults, filteredResults, recordResults1, recordResults2 } = this.state;
+    const { category, searchResults, recordResults1, recordResults2 } = this.state;
 
-    const { allUsers } = this.props;
+    const { users, transactions, employees, filteredResults } = this.props;
     return <div>
       <SplitPane split="vertical" minSize={10} defaultSize={150}>
           <div style={{backgroundColor: 'palegreen'}} className="overflow-container">
             <div>
+            <label>Set Category</label>
             <ul className="side_nav">
               {
-                this.props.categories.map(c => <li key={c} className="side_nav_items"><button onClick={ () => this.requestDataList(c) }>Set Category {c.toUpperCase()}</button></li>)
+                this.props.categories.map(c => <li key={c} className="side_nav_items"><button onClick={ () => this.requestDataList(c) }>{c.toUpperCase()}</button></li>)
               }
             </ul>
               <input
                 type="text"
                 ref="idSearch"
                 placeholder="Id"
-                onChange={ this.handleIdSearch }
               />
               <input
                 type="text"
                 ref="nameSearch"
                 placeholder="Name"
-                onChange={ () => this.rawSearch('name') }
               />
               <input
                 type="text"
                 ref="emailSearch"
                 placeholder="Email"
-                onChange={ () => this.rawSearch('email') }
               />
               <input
                 type="text"
                 ref="phoneSearch"
                 placeholder="Phone"
-                onChange={ () => this.rawSearch('phone') }
               />
               <input
                 type="text"
                 ref="userIdSearch"
                 placeholder="Transactions By User Id"
-                onChange={ () => this.getTransactionsByUserId() }
               />
               { this.state.category === 'employees' ?
                   <input
                     type="text"
                     ref="permissionsSearch"
                     placeholder="Permissions"
-                    onChange={ () => this.rawSearch('permissions') }
                   />
                 : ''
               }
             </div>
             <h2>Filtered Search Results</h2>
             <div id="filtered-results" className="overflow-container">
-             {/*} <SearchResults
+             { <SearchResults
                 searchResults={ filteredResults }
                 category={ category }
                 updateSelectedRecord={ this.updateSelectedRecord }
-              /> */}
+              /> }
             </div>
           </div>
           <SplitPane split="horizontal" minSize={10} defaultSize={350}>
               <div style={{backgroundColor: 'lavender'}} className="overflow-container">
                 <div>
                   <h2>{ category.toUpperCase() } Search Results</h2>
-                  {/*<SearchResults
-                    searchResults={ allUsers }
+                  {<SearchResults
+                    searchResults={ this.props.users }
                     category={ category }
                     updateSelectedRecord={ this.updateSelectedRecord }
-                  />*/}
+                  />}
                 </div>
               </div>
               <div style={{backgroundColor: 'mediumaquamarine', zIndex: '999'}}>
@@ -215,7 +153,7 @@ class DashBoard extends Component {
                     onClick={ () => this.selectContainer(1) }
                     className="selected-container overflow-container" style={{backgroundColor: 'lightcyan'}}
                     >
-                     {
+                   {
                       recordResults1 && recordResults1.category === 'user' ? 
                         <UserDetails
                           updateSelectedRecord={ this.updateSelectedRecord }
@@ -238,7 +176,7 @@ class DashBoard extends Component {
                     className="selected-container overflow-container"
                     style={{backgroundColor: 'oldlace'}}
                     >
-                     {
+                   {
                       recordResults2 && recordResults2.category === 'user' ? 
                         <UserDetails
                           updateSelectedRecord={ this.updateSelectedRecord }

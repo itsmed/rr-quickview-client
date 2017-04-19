@@ -29,12 +29,7 @@ class Login extends Component {
     this.props.checkToken();
   }
 
-  componentWillShouldProps(one, two) {
-    console.log('args', arguments);
-  }
-
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
     if (nextProps.isAuth) {
       this.props.history.push('/dashboard')
     }
