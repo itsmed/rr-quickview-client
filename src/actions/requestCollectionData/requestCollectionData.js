@@ -23,7 +23,6 @@ export function requestCollectionData(collection, filter, param) {
       .then(res => dispatch(receiveCollectionDataSuccess(collection, filter, res.data)))
       .catch(err => {
         console.log('error?', err);
-        // dispatch(toggleIsFetching());
         return dispatch(apiError(err.message));
       });
   }
@@ -31,11 +30,6 @@ export function requestCollectionData(collection, filter, param) {
 
 function receiveCollectionDataSuccess(collection, filter, payload) {
   return dispatch => {
-    // if (payload.error !== null) {
-    //   console.log('payload error!', payload.error);
-    //   // dispatch(toggleIsFetching());
-    //   return dispatch(toggleIsFetching());
-    // }
     switch(collection) {
       case 'employees':
         return dispatch(fetchEmployeesSuccess(filter, payload));
