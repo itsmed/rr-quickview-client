@@ -21,20 +21,28 @@ export function requestCollectionData(collection, filter, param) {
     }
     return axios.get(requestUrl)
       .then(res => dispatch(receiveCollectionDataSuccess(collection, filter, res.data)))
-      .catch(err => dispatch(apiError(err.message)));
+      .catch(err => {
+        console.log('this is expected', err.message);
+        dispatch(apiError(err.message));
+      });
   }
 }
 
 function receiveCollectionDataSuccess(collection, filter, payload) {
-  switch(collection) {
-    case 'employees':
-      return fetchEmployeesSuccess(filter, payload);
-    case 'transactions':
-      return fetchTransactionsSuccess(filter, payload);
-    case 'users':
-      return fetchUsersSuccess(filter, payload);
-    default:
-      return apiError('Unknown category, report a bug!');
+  return dispatch => {
+    if (payload.error !== null) {
+      return dispatch(apiError(payload.error))
+    }
+    switch(collection) {
+      case 'employees':
+        return dispatch(fetchEmployeesSuccess(filter, payload));
+      case 'transactions':
+        return dispatch(fetchTransactionsSuccess(filter, payload));
+      case 'users':
+        return dispatch(fetchUsersSuccess(filter, payload));
+      default:
+        return dispatch(apiError('Unknown category, report a bug!'));
+    }
   }
 }
 

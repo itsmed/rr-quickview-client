@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { getDataList } from '../../actions';
+import { requestCollectionData } from '../../actions';
 
 import SplitPane from 'react-split-pane';
 
@@ -131,7 +131,7 @@ class DashBoard extends Component {
 
   /*New*/
   requestDataList(category) {
-    this.props.getDataList(category);
+    this.props.requestCollectionData(category, 'all');
   }
 
   render() {
@@ -264,9 +264,12 @@ class DashBoard extends Component {
 
 function mapStateToProps(state) {
   return {
-    // allUsers: state.users.allUsers,
     categories: state.searchCategories,
+    employees: state.data.employees,
+    filteredResults: state.data.filteredResults,
+    transactions: state.data.transactions,
+    users: state.data.users,
   };
 }
 
-export default connect(mapStateToProps, { getDataList })(DashBoard);
+export default connect(mapStateToProps, { requestCollectionData })(DashBoard);
