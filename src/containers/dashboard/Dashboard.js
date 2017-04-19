@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { requestCollectionData, updateSearchCategory } from '../../actions';
+import {
+  requestCollectionData,
+  updateSearchCategory
+} from '../../actions';
 
 import SplitPane from 'react-split-pane';
 
