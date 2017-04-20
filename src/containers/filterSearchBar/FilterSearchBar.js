@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+import {
+  requestCollectionData,
+} from '../../actions';
+
 class FilterSearchBar extends Component {
   constructor(props) {
     super(props);
@@ -56,4 +60,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(FilterSearchBar);
+export default connect(mapStateToProps, { requestCollectionData })(FilterSearchBar);
