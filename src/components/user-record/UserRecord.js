@@ -16,7 +16,7 @@ class UserRecord extends Component {
 
     return <div onClick={ this.handleSelect }>
       <label>Name: </label>{user.full_name}<br />
-      <label>Id: </label>{user._id}<br />
+      <label>Id: </label>{user.userId}<br />
       <label>Email: </label>{user.email}<br />
       <hr />
     </div>;

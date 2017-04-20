@@ -13,10 +13,9 @@ class EmployeeRecord extends Component {
 
   render() {
     const { employee } = this.props;
-
     return <div onClick={ this.handleSelect }>
       <label>Name: </label>{employee.full_name}<br />
-      <label>Id: </label>{employee._id}<br />
+      <label>Id: </label>{employee.empId}<br />
       <label>Email: </label>{employee.email}<br />
       <hr />
     </div>;

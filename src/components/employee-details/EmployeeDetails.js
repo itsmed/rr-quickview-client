@@ -29,22 +29,22 @@ class EmployeeDetails extends Component {
       <button onClick={ this.toggleEditMode }>{ this.state.editMode ? 'Save' : 'Edit' }</button>
       { this.state.editMode ?
           <div>
-            <label>Id: </label>{employee._id}<br />
+            <label>Picture Url: </label><input type="text" placeholder={employee.picture} />
+            <label>Id: </label>{employee.empId}<br />
             <label>First Name: </label><input type="text" style={{width: '100%'}} placeholder={employee.name.first} /><br />
             <label>Last Name: </label><input type="text" style={{width: '100%'}} placeholder={employee.name.last} /><br />
             <label>Permission: </label><input type="text" style={{width: '100%'}} placeholder={employee.permissions} /><br />
             <label>Email: </label><input type="text" style={{width: '100%'}} placeholder={employee.email} /><br />
-            <label>Phone: </label><input type="text" style={{width: '100%'}} placeholder={employee.phone} />
             <hr />
           </div>
         :
           <div>
-            <label>Id: </label>{employee._id}<br />
+            <img src={employee.pic} style={{width: '100px'}} />
+            <label>Id: </label>{employee.empId}<br />
             <label>First Name: </label>{employee.name.first}<br />
             <label>Last Name: </label>{employee.name.last}<br />
             <label>Permission: </label>{employee.permissions}<br />
             <label>Email: </label>{employee.email}<br />
-            <label>Phone: </label>{employee.phone}
             <hr />
           </div>
       }

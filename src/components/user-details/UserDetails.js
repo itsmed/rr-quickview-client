@@ -29,10 +29,7 @@ class UserDetails extends Component {
       <button onClick={ this.toggleEditMode }>{ this.state.editMode ? 'Save' : 'Edit' }</button>
       { this.state.editMode ?
           <div>
-            <img
-              src={user.picture}
-              style={{width: '100px'}} 
-            />
+            <label>Picture Url: </label><input type="text" placeholder={user.picture} />
             <br />
             <label>Id: </label>{user.userId}<br />
             <label>Active: </label>{user.isActive.toString()} <button>Toggle Active</button><br />
@@ -40,7 +37,6 @@ class UserDetails extends Component {
             <label>Last Name: </label> <input type="text" style={{width: '100%'}} placeholder={user.name.last} /><br />
             <label>Balance: </label> <input type="text" style={{width: '100%'}} placeholder={user.balance} /><button>Add</button><button>Subtract</button><br />
             <label>Email: </label> <input type="text" style={{width: '100%'}} placeholder={user.email} /><br />
-            <label>Phone: </label> <input type="text" style={{width: '100%'}} placeholder={user.phone} /><br />
             <label>Address: </label> <input type="text" style={{width: '100%'}} placeholder={user.address} /><br />
             <hr />
           </div>
@@ -57,7 +53,6 @@ class UserDetails extends Component {
             <label>Last Name: </label>{user.name.last}<br />
             <label>Balance: </label>${user.balance}<br />
             <label>Email: </label>{user.email}<br />
-            <label>Phone: </label>{user.phone}<br />
             <label>Address: </label>{user.address}<br />
             <hr />
           </div>

@@ -29,18 +29,18 @@ class TransactionDetails extends Component {
       <button onClick={ this.toggleEditMode }>{ this.state.editMode ? 'Save' : 'Edit' }</button>
       { this.state.editMode ?
           <div>
-            <label>Id: </label>{transaction._id}<br />
+            <label>Id: </label>{transaction.t_id}<br />
             <label>Date: </label>{transaction.date}<br />
-            <label>Amount: </label><input type="text" placeholder={transaction.amount} /><br />
             <label>User Id: </label>{transaction.user_id}<br />
+            <label>Amount: </label><input type="text" placeholder={transaction.amount} /><br />
             <button>Refund</button>
           </div>
         :
           <div>
-            <label>Id: </label>{transaction._id}<br />
-            <label>Date: </label>{transaction.date}<br />
-            <label>Amount: </label>${transaction.amount}<br />
+            <label>Id: </label>{transaction.t_id}<br />
+            <label>Date: </label>{transaction.date.split('T')[0].split('')}<br />
             <label>User Id: </label>{transaction.user_id}<br />
+            <label>Amount: </label>${transaction.amount}<br />
             <hr />
           </div>
       }

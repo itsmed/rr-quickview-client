@@ -13,9 +13,8 @@ class TransactionRecord extends Component {
 
   render() {
     const { transaction } = this.props;
-
     return <div onClick={ this.handleSelect }>
-      <label>Id: </label>{ transaction._id }<br />
+      <label>Id: </label>{ transaction.t_id }<br />
       <label>Amount: </label>{ transaction.amount }<br />
       <hr />
     </div>;

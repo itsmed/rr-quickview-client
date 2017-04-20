@@ -12,6 +12,7 @@ import EmployeeDetails from '../../components/employee-details/EmployeeDetails';
 import UserDetails from '../../components/user-details/UserDetails';
 import SearchResults from '../../components/search-results/SearchResults';
 import TransactionDetails from '../../components/transaction-details/TransactionDetails';
+import FilterSearchBar from '../filterSearchBar/FilterSearchBar';
 
 import './dashboard.css';
 
@@ -20,8 +21,6 @@ class DashBoard extends Component {
     super(props);
 
     this.state = {
-      searchResults: [],
-      filteredResults: [],
       selectedContainer: '',
       recordResults1: null,
       recordResults2: null,
@@ -30,8 +29,6 @@ class DashBoard extends Component {
     this.updateCategory = this.updateCategory.bind(this);
     this.updateSelectedRecord = this.updateSelectedRecord.bind(this);
     this.selectContainer = this.selectContainer.bind(this);
-
-
     this.requestDataList = this.requestDataList.bind(this);
   }
 
@@ -39,8 +36,6 @@ class DashBoard extends Component {
     this.setState({
       selectedContainer: this.refs.container1,
     });
-    this.refs.idSearch.value = '';
-    this.refs.idSearch.focus();
   }
 
   updateCategory(category) {
@@ -78,7 +73,7 @@ class DashBoard extends Component {
   }
 
   render() {
-    const { searchResults, recordResults1, recordResults2 } = this.state;
+    const { recordResults1, recordResults2 } = this.state;
     const { category, users, transactions, employees, filteredResults } = this.props;
     return <div>
       <SplitPane split="vertical" minSize={10} defaultSize={150}>
@@ -90,39 +85,7 @@ class DashBoard extends Component {
                 this.props.categories.map(c => <li key={c} className="side_nav_items"><button onClick={ () => this.updateCategory(c) }>{c.toUpperCase()}</button></li>)
               }
             </ul>
-              <input
-                type="text"
-                ref="idSearch"
-                placeholder="Id"
-              />
-              <input
-                type="text"
-                ref="nameSearch"
-                placeholder="Name"
-              />
-              <input
-                type="text"
-                ref="emailSearch"
-                placeholder="Email"
-              />
-              <input
-                type="text"
-                ref="phoneSearch"
-                placeholder="Phone"
-              />
-              <input
-                type="text"
-                ref="userIdSearch"
-                placeholder="Transactions By User Id"
-              />
-              { this.state.category === 'employees' ?
-                  <input
-                    type="text"
-                    ref="permissionsSearch"
-                    placeholder="Permissions"
-                  />
-                : ''
-              }
+              <FilterSearchBar />
             </div>
             <h2>Filtered Search Results</h2>
             <div id="filtered-results" className="overflow-container">
